@@ -49,7 +49,7 @@ export default function HomePage() {
         <section className="container py-20 md:py-28">
           <div className="flex flex-col items-center text-center">
             <Badge variant="outline" className="mb-4">
-              {APP_NAME} · {today}-Test
+              {APP_NAME} · {today}
             </Badge>
             <h1 className="max-w-3xl text-balance text-4xl font-bold tracking-tight md:text-6xl">
               Ship a multi-app Next.js stack with one command.
