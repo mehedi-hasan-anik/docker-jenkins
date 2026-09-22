@@ -1,0 +1,26 @@
+services:
+  monorepo-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+
+    container_name: monorepo-dev
+
+    ports:
+      - "7000:7000"
+      - "7100:7100"
+
+    volumes:
+      # Mount the source for live reload; keep node_modules inside the image
+      - .:/app
+      - /app/node_modules
+
+    environment:
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+
+    stdin_open: true
+    tty: true

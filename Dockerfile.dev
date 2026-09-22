@@ -1,0 +1,28 @@
+FROM node:22-alpine
+
+# Install tini
+RUN apk add --no-cache tini
+
+# Match host UID/GID so volume-mounted files are not owned by root
+ARG UID=1000
+ARG GID=1000
+
+RUN apk add --no-cache shadow \
+    && groupmod -g ${GID} node \
+    && usermod -u ${UID} -g ${GID} node
+
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@10.24.0 --activate
+
+# Copy with the dev user as the owner so mounted volumes work
+COPY --chown=node:node . .
+
+RUN pnpm install
+
+USER node
+
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Run both apps in dev mode
+CMD ["sh", "-c", "pnpm web:serve & pnpm admin:serve & wait"]

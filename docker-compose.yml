@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    container_name: monorepo-container
+    ports:
+      # Only expose to localhost, not to external interfaces
+      - "127.0.0.1:7000:7000"
+      - "127.0.0.1:7100:7100"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
